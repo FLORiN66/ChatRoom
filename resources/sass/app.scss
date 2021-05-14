@@ -1,7 +1,8 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+
 // Variables
 @import 'variables';
+
 // Bootstrap
-@import '~bootstrap/scss/bootstrap.scss';
-// Then import Bootstrap an BootstrapVue SCSS files (order is important)
+@import '~bootstrap/scss/bootstrap';

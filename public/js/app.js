@@ -1879,14 +1879,16 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_bootstrap__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/index.js");
 /* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1__);
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
 
-Vue.use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default()));
-Vue.component('message', __webpack_require__(/*! ./components/message.vue */ "./resources/js/components/message.vue").default);
-var app = new Vue({
+
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default()));
+vue__WEBPACK_IMPORTED_MODULE_2__.default.component('example-component', __webpack_require__(/*! ./components/message.vue */ "./resources/js/components/message.vue").default);
+var app = new vue__WEBPACK_IMPORTED_MODULE_2__.default({
   el: '#app',
   data: {
     message: '',
