@@ -21,6 +21,4 @@ Route::get('/', function () {
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/chat', function(){
-    return view('chat');
-});
+Route::get('/chat', '\App\Http\Controllers\ChatController@chat');
