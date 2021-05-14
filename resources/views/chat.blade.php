@@ -23,7 +23,7 @@
 			<div class="offser-4 col-4">
 				<li class="list-group-item active">Chat Room</li>
 				<ul class="list-group" v-chat-scroll>
-					<message v-for="value in chat.message" :key="value.index">
+					<message v-for="value in chat.message" :key="value.index" color="success">
 						@{{value}}
 					</message>
 				</ul>
