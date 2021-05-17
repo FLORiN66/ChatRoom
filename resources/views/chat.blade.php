@@ -21,7 +21,7 @@
 	<div class="container">
 		<div class="row d-flex justify-content-center" id="app">
 			<div class="offser-4 col-4 offset-sm-1 col-sm-10">
-				<li class="list-group-item active">Chat Room</li>
+				<li class="list-group-item active">Chat Room<span class="badge badge-pill badge-warning">@{{numberOfUsers}}</span></li>
 				<div class="badge badge-pill badge-primary">@{{typing}}</div>
 				<ul class="list-group" v-chat-scroll>
 					<message v-for="value, index in chat.message" :key="value.index" :color=chat.color[index] :user = chat.user[index] :time = chat.time[index]>

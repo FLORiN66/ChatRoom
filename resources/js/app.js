@@ -2,8 +2,15 @@ import './bootstrap';
 
 window.Vue = require('vue').default;
 import Vue from 'vue'
+
+//for autoscroll
 import VueChatScroll from 'vue-chat-scroll'
 Vue.use(VueChatScroll)
+
+//For notifications
+import Toaster from 'v-toaster'
+import 'v-toaster/dist/v-toaster.css'
+Vue.use(Toaster, { timeout: 5000 })
 
 Vue.component('message', require('./components/message.vue').default);
 
@@ -19,7 +26,8 @@ const app = new Vue({
             color: [],
             time: []
         },
-        typing: ''
+        typing: '',
+        numberOfUsers: 0
     },
     watch: {
         message() {
@@ -67,6 +75,24 @@ const app = new Vue({
                     this.typing = "typing...";
                 } else { this.typing = ""; }
 
+            })
+        Echo.join('chat')
+            .here((users) => {
+                this.numberOfUsers = users.length;
+                // console.log(users)
+            })
+            .joining((user) => {
+                this.numberOfUsers += 1;
+                this.$toaster.success(user.name + ' is joined to chat room')
+                    // console.log(user.name);
+            })
+            .leaving((user) => {
+                this.numberOfUsers -= 1;
+                this.$toaster.warning(user.name + ' is leaved to chat room')
+                    // console.log(user.name);
+            })
+            .error((error) => {
+                console.error(error);
             });
     }
 });
