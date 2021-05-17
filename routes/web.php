@@ -23,7 +23,7 @@ Route::get('/', function () {
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/chat', '\App\Http\Controllers\ChatController@chat');
-Route::get('/send', '\App\Http\Controllers\ChatController@send');
+Route::post('/send', '\App\Http\Controllers\ChatController@send');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
