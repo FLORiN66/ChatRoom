@@ -32,7 +32,6 @@
 		</div>
 	</div>
 
-	<sript src="{{asset('js/app.js')}}"></sript>
 	<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 

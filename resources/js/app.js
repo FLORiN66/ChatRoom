@@ -5,7 +5,7 @@ import Vue from 'vue'
 import VueChatScroll from 'vue-chat-scroll'
 Vue.use(VueChatScroll)
 
-Vue.component('example-component', require('./components/message.vue').default);
+Vue.component('message', require('./components/message.vue').default);
 
 
 
