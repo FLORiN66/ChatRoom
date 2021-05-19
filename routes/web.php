@@ -22,8 +22,20 @@ Route::get('/', function () {
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/chat', '\App\Http\Controllers\ChatController@chat');
-Route::post('/send', '\App\Http\Controllers\ChatController@send');
+Route::get('chat', '\App\Http\Controllers\ChatController@chat');
+Route::post('send', '\App\Http\Controllers\ChatController@send');
+
+Route::post('saveToSession', '\App\Http\Controllers\ChatController@saveToSession');
+Route::post('getOldMessage', '\App\Http\Controllers\ChatController@getOldMessage');
+
+Route::post('deleteSession', '\App\Http\Controllers\ChatController@deleteSession');
+
+
+
+Route::get('/check', function(){
+    return session('chat');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

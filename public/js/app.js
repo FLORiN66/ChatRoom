@@ -1864,8 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
       return "badge-" + this.color;
     }
   },
-  mounted: function mounted() {
-    console.log("Component mounted.");
+  mounted: function mounted() {// console.log("Component mounted.");
   }
 });
 
@@ -1887,12 +1886,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var v_toaster__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(v_toaster__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var v_toaster_dist_v_toaster_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! v-toaster/dist/v-toaster.css */ "./node_modules/v-toaster/dist/v-toaster.css");
 /* harmony import */ var v_toaster_dist_v_toaster_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(v_toaster_dist_v_toaster_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
  //for autoscroll
 
 
 vue__WEBPACK_IMPORTED_MODULE_2__.default.use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default())); //For notifications
+
 
 
 
@@ -1929,8 +1931,9 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__.default({
         this.chat.user.push('you');
         this.chat.color.push('success');
         this.chat.time.push(this.getTime());
-        axios.post('/send', {
-          message: this.message
+        axios__WEBPACK_IMPORTED_MODULE_5___default().post('/send', {
+          message: this.message,
+          chat: this.chat
         }).then(function (response) {
           console.log(response);
           _this.message = '';
@@ -1942,38 +1945,62 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__.default({
     getTime: function getTime() {
       var time = new Date();
       return time.getHours() + ':' + time.getMinutes();
+    },
+    getOldMessage: function getOldMessage() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_5___default().post('/getOldMessage').then(function (response) {
+        console.log(response.data);
+
+        if (response.data != '') {
+          _this2.chat = response.data;
+        }
+      });
+    },
+    deleteSession: function deleteSession() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_5___default().post('/deleteSession').then(function (response) {
+        return _this3.$toaster.success('chat history is deleted');
+      });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this4 = this;
 
+    this.getOldMessage();
     Echo["private"]('chat').listen('ChatEvent', function (e) {
-      _this2.chat.message.push(e.message);
+      _this4.chat.message.push(e.message);
 
-      _this2.chat.user.push(e.user);
+      _this4.chat.user.push(e.user);
 
-      _this2.chat.color.push('warning');
+      _this4.chat.color.push('warning');
 
-      _this2.chat.time.push(_this2.getTime()); // console.log(e);
+      _this4.chat.time.push(_this4.getTime());
 
+      axios__WEBPACK_IMPORTED_MODULE_5___default().post('/saveToSession', {
+        chat: _this4.chat
+      }).then(function (response) {})["catch"](function (error) {
+        console.log(error);
+      }); // console.log(e);
     }).listenForWhisper('typing', function (e) {
       if (e.name != '') {
-        _this2.typing = "typing...";
+        _this4.typing = "typing...";
       } else {
-        _this2.typing = "";
+        _this4.typing = "";
       }
     });
     Echo.join('chat').here(function (users) {
-      _this2.numberOfUsers = users.length; // console.log(users)
+      _this4.numberOfUsers = users.length; // console.log(users)
     }).joining(function (user) {
-      _this2.numberOfUsers += 1;
+      _this4.numberOfUsers += 1;
 
-      _this2.$toaster.success(user.name + ' is joined to chat room'); // console.log(user.name);
+      _this4.$toaster.success(user.name + ' is joined to chat room'); // console.log(user.name);
 
     }).leaving(function (user) {
-      _this2.numberOfUsers -= 1;
+      _this4.numberOfUsers -= 1;
 
-      _this2.$toaster.warning(user.name + ' is leaved to chat room'); // console.log(user.name);
+      _this4.$toaster.warning(user.name + ' is leaved to chat room'); // console.log(user.name);
 
     }).error(function (error) {
       console.error(error);

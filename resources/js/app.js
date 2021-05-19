@@ -10,6 +10,7 @@ Vue.use(VueChatScroll)
 //For notifications
 import Toaster from 'v-toaster'
 import 'v-toaster/dist/v-toaster.css'
+import axios from 'axios';
 Vue.use(Toaster, { timeout: 5000 })
 
 Vue.component('message', require('./components/message.vue').default);
@@ -46,6 +47,7 @@ const app = new Vue({
                 this.chat.time.push(this.getTime());
                 axios.post('/send', {
                         message: this.message,
+                        chat: this.chat
                     })
                     .then(response => {
                         console.log(response);
@@ -59,15 +61,37 @@ const app = new Vue({
         getTime() {
             let time = new Date();
             return time.getHours() + ':' + time.getMinutes();
+        },
+        getOldMessage() {
+            axios.post('/getOldMessage')
+                .then(response => {
+                    console.log(response.data);
+                    if (response.data != '') {
+                        this.chat = response.data;
+                    }
+                })
+        },
+        deleteSession() {
+            axios.post('/deleteSession')
+                .then(response => this.$toaster.success('chat history is deleted'))
         }
     },
     mounted() {
+        this.getOldMessage();
         Echo.private('chat')
             .listen('ChatEvent', (e) => {
                 this.chat.message.push(e.message);
                 this.chat.user.push(e.user);
                 this.chat.color.push('warning');
                 this.chat.time.push(this.getTime());
+                axios.post('/saveToSession', {
+                        chat: this.chat
+                    })
+                    .then(response => {})
+                    .catch(error => {
+                        console.log(error)
+                    });
+
                 // console.log(e);
             })
             .listenForWhisper('typing', (e) => {
